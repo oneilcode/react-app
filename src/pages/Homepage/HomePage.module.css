@@ -8,3 +8,20 @@
     align-items: center;
     gap: 10px;
 }
+
+.select {
+   height: 40px;
+   padding: 5px;
+   border-radius: 10px;
+   border: none;
+   outline: none;
+   background-color: var(--card-bg-color);
+   color: var(--text-color);
+   flex-grow: 1;
+}
+
+@media (max-width: 576px) {
+    .controlsContainer{
+        flex-wrap: wrap-reverse;
+    }
+}
