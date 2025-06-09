@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { API_URL } from "../../constants";
 import cls from "./HomePage.module.css";
 import { QuestionCardList } from "../../components/QuestionCardList";
+import { Loader } from "../../components/Loader";
 
 export const HomePage = () => {
   const [questions, setQuestions] = useState([]);
@@ -23,7 +24,8 @@ export const HomePage = () => {
 
   return (
     <>
-      <QuestionCardList cards={questions}/>
+      <Loader />
+      <QuestionCardList cards={questions} />
     </>
   );
 };
