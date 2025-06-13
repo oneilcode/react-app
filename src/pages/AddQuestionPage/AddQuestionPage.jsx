@@ -1,17 +1,18 @@
 import cls from "./AddQuestionPage.module.css";
 import { Button } from "../../components/Button";
+import { Loader } from "../../components/Loader";
 import { delayFn } from "../../helpers/delay";
 import { useActionState } from "react";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 import { API_URL } from "../../constants";
 
 const createCardAction = async (_prevState, formData) => {
   try {
-    await delayFn()
+    await delayFn();
 
-    const newQuestion = Object.fromEntries(formData)
-    const resources = newQuestion.resourses.trim()
-    const isClearForm = newQuestion.clearForm
+    const newQuestion = Object.fromEntries(formData);
+    const resources = newQuestion.resourses.trim();
+    const isClearForm = newQuestion.clearForm;
 
     const response = await fetch(`${API_URL}/react`, {
       method: "POST",
@@ -23,29 +24,33 @@ const createCardAction = async (_prevState, formData) => {
         level: Number(newQuestion.level),
         completed: false,
         editDate: undefined,
-      })
-    })
+      }),
+    });
 
-    if(!response.ok) {
-      throw new Error(response.statusText);   
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
 
-    const question = response.json()
-    toast.success("New question was created")
+    const question = response.json();
+    toast.success("New question was created");
     console.log(formData);
-    
-    return isClearForm ? {} : question
+
+    return isClearForm ? {} : question;
   } catch (error) {
-    toast.error(error.message)
-    return {}
+    toast.error(error.message);
+    return {};
   }
 };
 
 export const AddQuestionPage = () => {
-  const [formState, formAction, isPending] = useActionState(createCardAction, {clearForm: true});
+  const [formState, formAction, isPending] = useActionState(createCardAction, {
+    clearForm: true,
+  });
 
   return (
     <>
+      {isPending && <Loader />}
+
       <h1 className={cls.formTitle}>Add new question</h1>
 
       <div className={cls.formContainer}>
@@ -97,7 +102,6 @@ export const AddQuestionPage = () => {
               id="resoursesField"
               cols="30"
               rows="5"
-              required
               placeholder="Please enter resourses separated by commas"
             ></textarea>
           </div>
