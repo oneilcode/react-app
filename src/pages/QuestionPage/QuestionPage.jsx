@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useFetch } from "../../hooks/usefetch";
 import { API_URL } from "../../constants";
 import { Loader, SmallLoader } from "../../components/Loader";
+import { useAuth } from "../../hooks/useAuth";
 
 const card = {
   id: "1",
@@ -25,6 +26,7 @@ export const QuestionPage = () => {
   const { id } = useParams();
   const [card, setCard] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
+  const { isAuth, setIsAuth } = useAuth();
 
   const levelVariant = () =>
     card.level === 1 ? "primary" : card.level === 2 ? "warning" : "alert";
@@ -40,7 +42,7 @@ export const QuestionPage = () => {
   const [updateCard, isCardUpdating] = useFetch(async (isChecked) => {
     const response = await fetch(`${API_URL}/react/${id}`, {
       method: "PATCH",
-      body: JSON.stringify({ completed: isChecked })
+      body: JSON.stringify({ completed: isChecked }),
     });
 
     const data = await response.json();
@@ -53,12 +55,12 @@ export const QuestionPage = () => {
   }, []);
 
   useEffect(() => {
-    card !== null && setIsChecked(card.completed)
+    card !== null && setIsChecked(card.completed);
   }, [card]);
 
   const onCheckboxChangehandler = () => {
-    setIsChecked(!isChecked)
-    updateCard(!isChecked)
+    setIsChecked(!isChecked);
+    updateCard(!isChecked);
   };
 
   return (
@@ -110,13 +112,21 @@ export const QuestionPage = () => {
             />
             <span>mark question as complited</span>
 
-            {isCardUpdating && <SmallLoader/>}
+            {isCardUpdating && <SmallLoader />}
           </label>
 
-          <Button onClick={() => navigate(`/editquestion/${card.id}`)} isDisabled={isCardUpdating}>
-            Edit question
+          {isAuth && (
+            <Button
+              onClick={() => navigate(`/editquestion/${card.id}`)}
+              isDisabled={isCardUpdating}
+            >
+              Edit question
+            </Button>
+          )}
+
+          <Button onClick={() => navigate("/")} isDisabled={isCardUpdating}>
+            Back
           </Button>
-          <Button onClick={() => navigate("/")} isDisabled={isCardUpdating}>Back</Button>
         </div>
       )}
     </>
