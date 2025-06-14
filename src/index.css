@@ -33,6 +33,16 @@ body {
   background-color: var(--main-bg-color);
 }
 
+.darkLayout  {
+  --main-bg-color: #fff;
+  --text-color: #000;
+
+  --btn-bg-color: #383b3f;
+  --btn-text-color: #fff;
+
+  --card-bg-color: #ebedf0;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     --main-bg-color: #fff;
